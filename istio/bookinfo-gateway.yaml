@@ -1,0 +1,52 @@
+# The combination of Gateway and VirtualService resources allows Istio to manage external
+# access to services inside the mesh and apply advanced traffic management and routing rules for incoming traffic
+
+# A Gateway that listens on port 80 for incoming HTTP traffic from any host
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  # The selector matches the ingress gateway pod labels.
+  # If you installed Istio using Helm following the standard documentation, this would be "istio=ingress"
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+#Specify hosts of which the Gateway should process incoming traffic, * meaning will the Gateway will process traffic for any host
+    hosts:
+    - "*"
+---
+# VirtualService define how traffic is routed to different services
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - "*"
+# specify the Gateway which the traffic should enter the VirtualService
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+# if request matches /productpage -> route to service name productpage on port 9080
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+# specify service which the request will be routed to
+    - destination:
+        host: productpage
+        port:
+          number: 9080
