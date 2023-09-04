@@ -1,7 +1,19 @@
 # First Istio Book Tutorial
 ## Summary
-This repo follows Istio demo(~/istio-1.18.1) sample tutorial, bookinfo.yaml pull istio/bookinfo docker 
-for deployment, service, 
+This repo follows Istio demo(~/istio-1.18.1) sample tutorial 
+<br>
+kubernetes/bookinfo.yaml pull istio/bookinfo docker for deployment, service
+<br>
+kubernets/namespace.yml creates bookinfo-namespace 
+<br>
+istio/bookinfo-gateway.yaml deploys istio-gateway
+
+Istio gateways
+<br>
+(1) Ingress gateway: handles incoming Http, Https traffic to the mesh
+<br>
+(2) Egress gateway: handles outgoing traffic from the mesh
+
 
 ## Links
 https://phoenixnap.com/kb/istio-tutorial 
